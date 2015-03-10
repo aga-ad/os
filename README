@@ -1,0 +1,7 @@
+To run ./cat you need to append path with libhelpers.so to LD_LIBRARY_PATH.
+
+For example:
+	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../lib/
+	export LD_LIBRARY_PATH
+
+And then run ./cat from cat path.
