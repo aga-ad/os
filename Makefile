@@ -7,7 +7,7 @@ cat/cat: cat/Makefile
 	make -C cat
 
 revwords/revwords: revwords/Makefile
-	make -c revwords
+	make -C revwords
 
 clean:
 	make clean -C lib
