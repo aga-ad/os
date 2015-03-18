@@ -47,7 +47,7 @@ int main() {
 				l = i + 1;
 			}
 		}
-		if (buffer_size == MAX_WORD_LENGTH) {
+		if (buffer_size - l == MAX_WORD_LENGTH) {
 			reverse(buf, buffer_size);
 			write_size = write_(STDOUT_FILENO, buf, buffer_size);
 			if (write_size == -1) {
