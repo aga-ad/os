@@ -14,7 +14,7 @@ void reverse(char* buf, size_t size) {
 int main() {
     const size_t BUFFER_CAPACITY = 4096;
     const size_t MAX_WORD_LENGTH = 4096;//"Гарантируется, что каждое слово имеет длину не более 4096 байт."
-	char buf[BUFFER_CAPACITY + 1];
+	char buf[BUFFER_CAPACITY];
 	int i, l;
 	ssize_t read_size, write_size, buffer_size;
 	buffer_size = 0;
