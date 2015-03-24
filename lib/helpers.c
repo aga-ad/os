@@ -1,4 +1,6 @@
 #include "helpers.h"
+#include "stdio.h"
+
 
 ssize_t read_(int fd, void *buf, size_t count) {
     ssize_t offset = 0;
@@ -49,5 +51,20 @@ ssize_t read_until(int fd, void * buf, size_t count, char delimiter) {
             }
         }
         offset += size;
+    }
+}
+
+int spawn(const char * file, char * const argv []) {
+    int res = fork();
+    if (res == 0) {
+        exit(execvp(file, argv));
+    }
+    else if (res > 0) {
+        int status;
+        wait(&status);
+        return status;
+    }
+    else {
+        return -1;
     }
 }
