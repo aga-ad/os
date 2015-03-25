@@ -3,12 +3,15 @@
 //argument length must be less than BUFFER_CAPACITY
 int main(int argn, char** argv) {
     const size_t BUFFER_CAPACITY = 4096;
+    const size_t MAX_ARGUMENTS_NUMBER = 256;
     char buf[BUFFER_CAPACITY];
-    int i, l, status;
+    int i, l, status, last_argument;
     ssize_t read_size, write_size, buffer_size;
-    char* args[2];
-    args[0] = argv[1];
+    char* args[MAX_ARGUMENTS_NUMBER];
     buffer_size = 0;
+    for (last_argument = 0; last_argument + 1 < argn; last_argument++) {
+        args[last_argument] = argv[last_argument + 1];
+    }
     while (1) {
         read_size = read_until(STDIN_FILENO, buf + buffer_size, BUFFER_CAPACITY - buffer_size, '\n');
         if (read_size == -1) {
@@ -18,7 +21,7 @@ int main(int argn, char** argv) {
             if (buffer_size == 0) {
                 return 0;
             }
-            args[1] = buf;
+            args[last_argument] = buf;
             buf[buffer_size] = 0;
             status = spawn(args[0], args);
             if (status == 0) {
@@ -38,7 +41,7 @@ int main(int argn, char** argv) {
         l = 0;
         for (; i < buffer_size; i++) {
             if (buf[i] == '\n') {
-                args[1] = buf + l;
+                args[last_argument] = buf + l;
                 buf[i] = 0;
                 status = spawn(args[0], args);
                 if (status == 0) {
