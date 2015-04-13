@@ -7,6 +7,9 @@ struct buf_t {
 
 struct buf_t *buf_new(size_t capacity) {
     struct buf_t *p = malloc(2 * sizeof(size_t) + capacity);
+    if (p == 0) {
+        return 0;
+    }
     p->capacity = capacity;
     p->size = 0;
     return p;
