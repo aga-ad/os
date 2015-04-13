@@ -11,8 +11,7 @@ int main(int argn, char** argv) {
         args[last_argument] = argv[last_argument + 1];
     }
     struct buf_t *out = buf_new(4096);
-    struct buf_t *in = buf_new(4096
-        );
+    struct buf_t *in = buf_new(4096);
     char str[4096];
     while (1) {
         read_size = buf_getline(STDIN_FILENO, in, str);

@@ -139,12 +139,8 @@ ssize_t buf_write(fd_t fd, struct buf_t *buf, char* src, size_t len) {
     for (i = 0; i < len; i++) {
         if (buf->size == buf->capacity) {
             write_size = write(fd, buffer, buf->capacity);
-            if (write_size == -1) {
+            if (write_size < 1) {
                 return -1;
-            }
-            if (write_size == 0) {//wtf?
-                i--;
-                continue;
             }
             for (j = 0; j < buf->capacity - write_size; j++) {
                 buffer[j] = buffer[j + write_size];
