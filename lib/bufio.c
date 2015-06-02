@@ -57,6 +57,24 @@ ssize_t buf_fill(fd_t fd, struct buf_t *buf, size_t required) {
     }
 }
 
+ssize_t buf_fill_something(fd_t fd, struct buf_t *buf) {
+    #ifdef DEBUG
+        if (buf == NULL) {
+            abort();
+        }
+    #endif
+    if (buf->size == buf->capacity) {
+        return buf->size;
+    }
+    char* buffer = (char*)buf + 2 * sizeof(size_t);
+    ssize_t read_size = read(fd, buffer + buf->size, buf->capacity - buf->size);
+    if (read_size == -1) {
+        return -1;
+    }
+    buf->size += read_size;
+    return buf->size;
+}
+
 ssize_t buf_flush(fd_t fd, struct buf_t *buf, size_t required) {
     #ifdef DEBUG
         if (buf == NULL) {
