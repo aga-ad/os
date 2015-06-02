@@ -1,4 +1,4 @@
-all: lib/libhelpers.so cat/cat revwords/revwords filter/filter bufcat/bufcat simplesh/simplesh
+all: lib/libhelpers.so cat/cat revwords/revwords filter/filter bufcat/bufcat simplesh/simplesh filesender/filesender
 
 lib/libhelpers.so: lib/Makefile
 	make -C lib
@@ -18,6 +18,9 @@ bufcat/bufcat: bufcat/Makefile
 simplesh/simplesh: simplesh/Makefile
 	make -C simplesh
 
+filesender/filesender: filesender/Makefile
+	make -C filesender
+
 clean:
 	make clean -C lib
 	make clean -C cat
@@ -25,3 +28,4 @@ clean:
 	make clean -C filter
 	make clean -C bufcat
 	make clean -C simplesh
+	make clean -C filesender
