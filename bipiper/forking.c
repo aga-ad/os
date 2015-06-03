@@ -50,6 +50,7 @@ int main(int argn, char** argv) {
         err("getaddrinfo");
     if (bind(listener1, info->ai_addr, info->ai_addrlen) == -1)
         err("bind");
+    freeaddrinfo(info);
     if (getaddrinfo("localhost", argv[2], NULL, &info) == -1)
         err("getaddrinfo");
     if (bind(listener2, info->ai_addr, info->ai_addrlen) == -1)
