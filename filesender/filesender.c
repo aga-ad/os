@@ -56,7 +56,7 @@ int main(int argn, char** argv) {
 
     struct sockaddr_in client;
     socklen_t sz;
-    int clientfd;
+    int clientfd, frk;
     while (1) {
         sz = sizeof(client);
         clientfd = accept(listener, (struct sockaddr*)&client, &sz);
@@ -64,8 +64,10 @@ int main(int argn, char** argv) {
         //printf("from %s:%d\n", inet_ntoa(client.sin_addr), ntohs(client.sin_port));
         if (clientfd == -1)
             err("accept");
-
-        if (fork() == 0) {
+        frk = fork();
+        if (frk == -1)
+            err("fork");
+        if (frk == 0) {
             close(listener);
             int file = open(argv[2], O_RDONLY);
             if (file == -1)

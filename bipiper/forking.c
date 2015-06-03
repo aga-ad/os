@@ -61,7 +61,7 @@ int main(int argn, char** argv) {
 
     struct sockaddr_in client1, client2;
     socklen_t sz;
-    int clientfd1, clientfd2;
+    int clientfd1, clientfd2, frk;
     while (1) {
         sz = sizeof(client1);
         clientfd1 = accept(listener1, (struct sockaddr*)&client1, &sz);
@@ -70,8 +70,10 @@ int main(int argn, char** argv) {
 
         if (clientfd1 == -1 || clientfd2 == -1)
             err("accept");
-
-        if (fork() == 0) {
+        frk = fork();
+        if (frk == -1)
+            err("fork");
+        if (frk == 0) {
             close(listener1);
             close(listener2);
             struct buf_t* buf = buf_new(4096);
@@ -92,8 +94,10 @@ int main(int argn, char** argv) {
             buf_free(buf);
             return 0;
         }
-
-        if (fork() == 0) {
+        frk = fork();
+        if (frk == -1)
+            err("fork");
+        if (frk == 0) {
             close(listener1);
             close(listener2);
             struct buf_t* buf = buf_new(4096);
