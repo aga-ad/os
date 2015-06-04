@@ -170,3 +170,7 @@ ssize_t buf_write(fd_t fd, struct buf_t *buf, char* src, size_t len) {
     }
     return len;
 }
+
+void buf_clear(struct buf_t* buf) {
+    buf->size = 0;
+}
