@@ -29,7 +29,7 @@ int str_to_port(char* s) {
     return res;
 }
 
-void sigpipe_off(int sig) {}
+//void sigpipe_off(int sig) {}
 
 struct Client {
     size_t last;
@@ -62,11 +62,11 @@ int main(int argn, char** argv) {
         return 1;
     }
 
-    struct sigaction sigact;
-    memset(&sigact, '\0', sizeof(sigact));
-    sigact.sa_handler = &sigpipe_off;
-    if (sigaction(SIGPIPE, &sigact, NULL) < 0)
-        err("sigaction");
+    //struct sigaction sigact;
+    //memset(&sigact, '\0', sizeof(sigact));
+    //sigact.sa_handler = &sigpipe_off;
+    //if (sigaction(SIGPIPE, &sigact, NULL) < 0)
+    //    err("sigaction");
 
     int listener = socket(AF_INET, SOCK_STREAM, 0);
     if (listener == -1)
@@ -199,7 +199,7 @@ int main(int argn, char** argv) {
         }
         for (i = clients.size(); i > 0; i--) {
             if (clients[i - 1].fails == 3) {
-                printf("BAD CLIENT\n");
+                //printf("BAD CLIENT\n");
                 close(fds[i].fd);
                 fds[i] = fds[clients.size()];
                 clients[i - 1].kill();
