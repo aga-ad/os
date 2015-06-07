@@ -51,6 +51,7 @@ int main(int argn, char** argv) {
     const size_t CLIENT_LIMIT = 256;//client maximum is CLIENT_LIMIT - 1
     const size_t MAX_MESSAGE = 4096;
     const char* NEW_CLIENT_MESSAGE = "Welcome, ";
+    const char* DISCONNECT_MESSAGE = "Bye, ";
 
     if (argn != 2) {
         printf("usage: "
@@ -200,6 +201,16 @@ int main(int argn, char** argv) {
         for (i = clients.size(); i > 0; i--) {
             if (clients[i - 1].fails == 3) {
                 //printf("BAD CLIENT\n");
+                if (clients[i - 1].nick != 0) {
+                    msgs.push_back((char*)malloc(strlen(clients[i - 1].nick) + strlen(DISCONNECT_MESSAGE) + 3));
+                    if (msgs.back() == 0)
+                        err("malloc");
+                    strcpy(msgs.back(), DISCONNECT_MESSAGE);
+                    size = strlen(DISCONNECT_MESSAGE);
+                    strcpy(msgs.back() + size, clients[i - 1].nick);
+                    strcpy(msgs.back() + size + strlen(clients[i - 1].nick), "\n");
+                    printf("%s", msgs.back());
+                }
                 close(fds[i].fd);
                 fds[i] = fds[clients.size()];
                 clients[i - 1].kill();
