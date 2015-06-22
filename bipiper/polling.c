@@ -63,20 +63,20 @@ int main(int argn, char** argv) {
     if (sigaction(SIGPIPE, &sigact, NULL) < 0)
         err("sigaction");
 
-    int listener1 = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    int listener2 = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    int listener1 = socket(AF_INET, SOCK_STREAM, 0);
+    int listener2 = socket(AF_INET, SOCK_STREAM, 0);
     if (listener1 == -1 || listener2 == -1)
         err("sockets");
     int one = 1;
     if (setsockopt(listener1, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int)) == -1 || setsockopt(listener2, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int)) == -1)
         err("setsockopt");
     struct addrinfo* info;
-    if (getaddrinfo("localhost", argv[1], NULL, &info) == -1)
+    if (getaddrinfo("0.0.0.0", argv[1], NULL, &info) == -1)
         err("getaddrinfo");
     if (bind(listener1, info->ai_addr, info->ai_addrlen) == -1)
         err("bind");
     freeaddrinfo(info);
-    if (getaddrinfo("localhost", argv[2], NULL, &info) == -1)
+    if (getaddrinfo("0.0.0.0", argv[2], NULL, &info) == -1)
         err("getaddrinfo");
     if (bind(listener2, info->ai_addr, info->ai_addrlen) == -1)
         err("bind");

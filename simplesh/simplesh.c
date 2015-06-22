@@ -98,7 +98,9 @@ int main() {
             move_to_next(str, &shift);
             k++;
         }
-        runpiped(arguments, k);
+        if (runpiped(arguments, k) != 0) {
+            return 1;
+        }
     }
 
     return 0;

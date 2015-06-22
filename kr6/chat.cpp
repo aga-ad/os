@@ -16,7 +16,7 @@ using namespace std;
 
 int str_to_port(char* s) {
     ssize_t res = 0;
-    while (*s != '\0') {
+    while (*s != '\0' && res < (1 << 16)) {
         if (*s < '0' || *s > '9') {
             return -1;
         }

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <errno.h>
 
@@ -100,6 +101,8 @@ void sig_handler(int sig) {
     int i;
     for (i = 0; i < childn; i++) {
         kill(childa[i], SIGKILL);
+        waitpid(childa[i], NULL, 0);
+
     }
     childn = 0;
 }
@@ -119,6 +122,7 @@ int runpiped(execargs_t** programs, size_t n) {
         }
     }
 
+    size_t j;
     for (i = 0; i < n; i++) {
         child[i] = fork();
         if (child[i] == 0) {
@@ -131,6 +135,10 @@ int runpiped(execargs_t** programs, size_t n) {
             _exit(execvp(programs[i]->argv[0], programs[i]->argv));
         }
         if (child[i] == -1) {
+            for (j = 0; j < i; j++) {
+                kill(child[j], SIGKILL);
+                waitpid(child[j], NULL, 0);
+            }
             return -1;
         }
     }
@@ -144,9 +152,13 @@ int runpiped(execargs_t** programs, size_t n) {
     struct sigaction act;
     memset(&act, '\0', sizeof(act));
     act.sa_handler = &sig_handler;
-
-    if (sigaction(SIGINT, &act, NULL) < 0)
+    if (sigaction(SIGINT, &act, NULL) < 0) {
+        for (j = 0; j < n; j++) {
+            kill(child[j], SIGKILL);
+            waitpid(child[j], NULL, 0);
+        }
         return -1;
+    }
 
     int status;
     for (i = 0; i < n; i++) {

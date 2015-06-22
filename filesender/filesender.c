@@ -46,7 +46,7 @@ int main(int argn, char** argv) {
     if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int)) == -1)
         err("setsockopt");
     struct addrinfo* info;
-    if (getaddrinfo("localhost", argv[1], NULL, &info) == -1)
+    if (getaddrinfo("0.0.0.0", argv[1], NULL, &info) == -1)
         err("getaddrinfo");
     if (bind(listener, info->ai_addr, info->ai_addrlen) == -1)
         err("bind");
